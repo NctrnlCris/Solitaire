@@ -1,4 +1,5 @@
 #include <stdio.h>
+#define CARDCOUNT = 52
 
 enum Suit{
     DIAMONDS, CLUBS, HEARTS, SPADES
@@ -15,9 +16,10 @@ typedef struct{
 
 } Card;
 
-void Shuffle()
+void Shuffle() {
+    // Shuffle the deck to be dealt randomly. Done at start of the game
+}
 
-int main (void)
+int main(void)
 {
-
 }
