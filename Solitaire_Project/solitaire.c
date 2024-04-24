@@ -53,6 +53,83 @@ int can_be_placed_on_foundation(card parent, card child) {
     //checks to see if a card can be placed on the foundation by calling suit and sequence function
 }
 
+
+card make_card(int suit, int value) {
+  card c;
+  c.suit = suit;
+  c.value = value;
+  return c;
+  //makes a card
+}
+
+card *make_card_ptr(int suit, int value) {
+  card *c = mallocz(sizeof(card));
+  c->suit = suit;
+  c->value = value;
+  return c;
+  //makes a pointer to a card
+}
+
+typedef struct card_node {
+  card *value;
+  struct card_node *next;
+  // defining a card node
+} card_node;
+
+typedef struct pile {
+  card_node *head;
+  int num_cards;
+  char type;
+  // defining a pile
+} pile;
+
+card_node *find_tail(pile *pile) {
+  card_node *tail = pile->head;
+  if (tail == 0)
+    return 0;
+  while (tail->next != 0) {
+    tail = tail->next;
+  }
+  // finds the end of the a pile
+  return tail;
+}
+
+card_node *make_node(card *card) {
+  card_node *node = mallocz(sizeof(card_node));
+  node->value = card;
+  node->next = 0;
+  return node;
+  //makes a card node
+}
+
+int is_empty(pile *pile) 
+{ return pile->num_cards == 0; }
+// Checking for empty pile
+
+void push(pile *pile, card *card) {
+  card_node *tail = find_tail(pile);
+  if (tail == NULL) {
+    pile->head = make_node(card);
+  } else {
+    tail->next = make_node(card);
+  }
+  pile->num_cards++;
+  // add card to end of list
+}
+
+card *pop(pile *pile) {
+  // remove a card from the end of the list
+}
+
+void unshift(pile *pile, card *card) {
+  // append to the beginning of the list
+}
+
+
+card *shift(pile *pile) {
+ // remove a card from the beginning of the list
+}
+
 int main(void)
 {
     //main functin where game will start
