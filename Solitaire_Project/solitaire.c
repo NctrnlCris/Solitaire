@@ -1,3 +1,4 @@
+
 #include <memory.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -478,8 +479,8 @@ char *second_row_headers[] = {"Column 1", "Column 2", "Column 3", "Column 4",
                               "Column 5", "Column 6", "Column 7"};
 
 void print_prompt(game_state *state) {
-  move(rows - 3, 0);
-  printw("Score: %d", state->score);
+  move(rows - 2, 0);
+  printw("CLC Project 2024");
   move(rows - 1, 0);
   printw("Solitaire by Cristian Batista >");
 }
@@ -642,6 +643,8 @@ enum {
   MOVE_INVALID_MOVE,
   MOVE_TOO_MANY_CARDS,
   MOVE_CANNOT_REDEAL,
+  MOVE_INVALID_DESTINATION1,
+  MOVE_INVALID_DESTINATION2,
   MOVE_INVALID_DESTINATION,
   MOVE_INVALID_SOURCE
 };
@@ -687,14 +690,14 @@ int attempt_move(game_state *state, char *command) {
   }
 
   //catch source / destination too high
-  if((parsed.destination == 'c' && ((parsed.destination_index >= COLUMN_COUNT) || (parsed.destination_index < 1)))
-      || (parsed.destination == 'f' && ((parsed.destination_index >= FOUNDATION_COUNT) || (parsed.destination_index < 1))))
+  if((parsed.destination == 'c' && ((parsed.destination_index >= COLUMN_COUNT + 1) || (parsed.destination_index < 1)))
+      || (parsed.destination == 'f' && ((parsed.destination_index >= FOUNDATION_COUNT + 1) || (parsed.destination_index < 1))))
   {
-    return MOVE_INVALID_DESTINATION;
+    return MOVE_INVALID_DESTINATION1;
   }
 
   // source_index can also be broken
-  if(parsed.source == 'c' && ((parsed.source_index >= COLUMN_COUNT) || (parsed.source_index < 1))){
+  if(parsed.source == 'c' && ((parsed.source_index >= COLUMN_COUNT + 1) || (parsed.source_index < 1))){
     return MOVE_INVALID_SOURCE;
   }
 
@@ -775,7 +778,7 @@ int attempt_move(game_state *state, char *command) {
         }
       }
     } else {
-      return MOVE_INVALID_DESTINATION;
+      return MOVE_INVALID_DESTINATION2;
     }
   }
 
@@ -802,7 +805,7 @@ int main() {
     erase();
     // pick up the source, destination and attempt the move
     int result = attempt_move(state, buffer);
-    mvprintw(rows - 2, 0, "Move status: %s", move_results[result]);
+    mvprintw(rows - 3, 0, "Move status: %s", move_results[result]);
     // show new status in the status bar
     print_all_curses(state);
   }
